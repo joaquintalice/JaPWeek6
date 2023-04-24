@@ -1,85 +1,64 @@
-// Conexiones con el html
-const btn_container = document.getElementById("btn-container");
-const status_info = document.getElementById("status-info");
-const task_list = document.getElementById("task-list");
-const ul_container = document.getElementById("ul-container");
-
-//Variable que almacena cuál fue el botón que pulsó el usuario
-let selection;
-
-// Array para almacenar las tareas
-const tasks = [];
-
-// Acá se le asigna el contenido del botón que presione el usuario a la variable selection
-const btn_selected = btn_container.addEventListener("click", (event) => {
-    selection = event.target.textContent;
-
-    if (selection === "Agregar") {
-        addTask();
-        showTasks();
-    } else if (selection === "Eliminar") {
-        deleteTask();
-        showTasks();
-    }
-})
+/* ***************************** */ 
+/* Acá se vinculan los elementos del HTML para ser modificados en el programa */ 
+const btnAgregar = document.getElementById("btn-agregar"); 
+const btnEliminar = document.getElementById("btn-eliminar");
+const statusInfo = document.getElementById("status-info"); 
+const ulContainer = document.getElementById("ul-container"); 
+/* ***************************** */ 
 
 
-// Función para agregar una tarea
+
+const tasks = []; // Variable que se inicializa en un array vacío
+
+/* ***************************** */ 
+btnAgregar.addEventListener("click", addTask); // Se agrega un event listener al botón de agregar
+btnEliminar.addEventListener("click", deleteTask); // Lo mismo para el botón de eliminar
+/* Lo que hace, es que cuando el usuario hace click en cualquiera de los dos botones, se ejecutará
+la función correspondiente que se le haya asignado. */ 
+/* ***************************** */ 
+
+
+/* ***************************** */ 
 function addTask() {
-    tasks.push(prompt("Agrega una tarea"));
-    status_info.textContent = `La última tarea agregada fue ${tasks[tasks.length - 1]}`;
-}
-
-// Función para eliminar una tarea
-function deleteTask() {
-    // se guarda el índice del elemento contenido en el array que el usuario digite
-    const index = tasks.indexOf(prompt("Qué tarea desea eliminar?"));
-
-    // se guarda el elemento eliminado en la variable removed
-    let removed;
-
-    // si el índice que se aloja en index, es distinto de -1, es decir, es un valor que existe en el array,
-    // se removerá el elemento y se mostrará un mensaje de cuál ha sido el último en ser removido
-    if (index !== -1) {
-        removed = tasks.splice(index, 1);
-        status_info.textContent = `La última tarea eliminada fue ${removed}`;
-    } else {
-        // si el valor que se aloja en índice es -1, es decir, un valor que no se encuentra en el array
-        // mostrará este texto en pantalla
-        status_info.textContent = "Valor incorrecto";
+    const task = prompt("Agrega una tarea"); // Le pide al usuario agregar una tarea la cual se alojará en task
+    if (task) { // Si task es verdadero, ejecutará el siguiente código
+        tasks.push(task); // Agrega task al array tasks
+        statusInfo.textContent = `La última tarea agregada fue ${tasks[tasks.length - 1]}`; // Actualiza el texto de el elemento status-info con la última tarea agregada
+    } else { // Si task es falso, ejecutará el siguiente código
+        statusInfo.textContent = "Valor incorrecto"; // Actualiza el texto de el elemento status-info con un mensaje de error
     }
-
+    showTasks(); // Llama a la función showTasks() para actualizar la lista con la nueva información
 }
+/* ***************************** */ 
 
-// Función para mostrar la lista de tareas
+
+/* ***************************** */ 
+function deleteTask() {
+    const task = prompt("Qué tarea desea eliminar?"); // Le pregunta al usuario que tarea desea eliminar y la aloja en task
+    const index = tasks.indexOf(task); // Aloja el índice de task en en la constante index con el método .indexOf()
+    if (index !== -1) { // Si el valor de index es distinto de -1, es decir, el valor de index se encuentra en el array tasks, será verdadero
+        const removed = tasks.splice(index, 1); // Remueve el elemento con el índice que aloje la constante index
+        statusInfo.textContent = `La última tarea eliminada fue ${removed}`; // Actualiza el texto de el elemento status-info con la última tarea removida
+    } else { 
+        statusInfo.textContent = "Valor incorrecto"; // Actualiza el texto de el elemento status-info con un mensaje de error
+    }
+    showTasks(); // Llama a la función showTasks() para actualizar la lista con la nueva información
+}
+/* ***************************** */ 
+
+
+/* ***************************** */ 
 function showTasks() {
+    ulContainer.innerHTML = ""; // Reinicia lo que contiene el cl contenedor con ID "ul-container" en el HTML
 
-    //limpiamos la lista desordenada
-    ul_container.innerHTML = "";
-
-    //para cada elemento de el array tasks, crearemos un elemento "li"
-    //luego, se le agregará a ese elemento li un texto que contiene el índice +1 para mostrar el número al que corresponde en ese array y el nombre de dicho elemento
-    // y finalmente, se agrega el "li" creado anteriormente, a la lista desordenada que fue creada en el HTML 
+    /*Se itera el array tasks con el método ".forEach()". DIcho método, ejecuta una función flecha a la que se le asignan
+    dos parámetros, uno es "task" que representa el valor del elemento en la iteración actual y "index" que representa
+    el índice del elemento en el arreglo.*/
     tasks.forEach((task, index) => {
-        const li = document.createElement("li"); // Creamos un elemento de lista (li)
-        li.textContent = `${index + 1}. ${task}`; // Agregamos el texto de la tarea al elemento de lista
-        ul_container.appendChild(li); // Agregamos el elemento de lista a la lista desordenada
+        const li = document.createElement("li"); // Crea un nuevo elemento li en el HTML
+        li.textContent = `${index + 1}. ${task}`; // Actualiza el texto de li para mostrar el índice en el que se encuentra +1 (para que no comience desde 0) y la tarea correspondiente a ese índice
+        ulContainer.appendChild(li); // Se agrega el elemento li como hijo de el elemento ul, el cual, tiene como ID "ul-container".
     });
+}
+/* ***************************** */ 
 
-
-};
-
-
-
-
-/* 
-// Ejemplos de uso de las funciones
-addTask();
-addTask();
-addTask();
-showTasks(); // Muestra la lista de tareas
-
-deleteTask("Lavar la ropa"); // Elimina una tarea
-
-showTasks(); // Muestra la lista de tareas actualizada
- */

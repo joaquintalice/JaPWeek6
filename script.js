@@ -35,7 +35,7 @@ function addTask() {
 /* ***************************** */
 function deleteTask() {
     const taskIndex = parseInt(prompt("Ingrese el número de la tarea que desea eliminar:")); // Le pregunta al usuario el número de la tarea que desea eliminar y lo aloja en la variable taskIndex
-    if (!isNaN(taskIndex) && taskIndex >= 0 && taskIndex < tasks.length) { // Verifica si el valor ingresado es un número válido y está dentro del rango de índices del array tasks
+    if (!isNaN(taskIndex) && taskIndex >= 1 && taskIndex <= tasks.length) { // Verifica si el valor ingresado es un número válido y está dentro del rango de índices del array tasks
         const removed = tasks.splice(taskIndex - 1, 1); // Remueve el elemento en el índice especificado por el usuario y se le resta 1 a "taskIndex" para que el índice coincida con el utilizado por JavaScript.
         statusInfo.textContent = `La tarea eliminada fue: "${removed}"`; // Actualiza el texto del elemento status-info con la tarea eliminada
     } else {
@@ -43,6 +43,7 @@ function deleteTask() {
     }
     showTasks(); // Llama a la función showTasks() para actualizar la lista con la nueva información
 }
+
 
 /* ***************************** */
 
